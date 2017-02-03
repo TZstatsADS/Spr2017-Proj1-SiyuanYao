@@ -21,8 +21,13 @@ library(scales)
 library(RANN)
 library(topicmodels)
 ```
+
+
+# Part 0 Preface
 The purpose of this project aims to analyze the difference of Republic President and Democratic President focused Policy from their inauguration speeches.
-Note!!!: Before run the document, please change the "folder.path" according to your computer document path. There are 6 places need to change.
+Note!!!: Before run the document, please change the "folder.path" according to your computer document path. There are 6 places need to change.(line28, 62, 124, 159, 216, 235)
+
+
 # Part 1 Analysis of Republican President Inauguartion
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 folder.path="D:/Spr2017-Proj1-SiyuanYao/data/Rep"
@@ -96,10 +101,6 @@ p <- p + geom_bar(stat="identity")
 p <- p + theme(axis.text.x=element_text(angle=45, hjust=1))   
 p  
 dtmss <- removeSparseTerms(dtm, 0.15) # This makes a matrix that is only 15% empty space, maximum. 
-```
-
-
-```{r,echo=FALSE, warning=FALSE,message=FALSE}
 ```
 
 # Cluster Dendrogram Analysis in Most Frequent Words
@@ -316,9 +317,37 @@ shinyApp(
 ```
 
 
-```{r,echo=FALSE, warning=FALSE,message=FALSE}
+# Part 4 Conclusion
 
-```
+Economy
+Democratic President:Favor minimum wages and progressive taxation i.e. higher tax rates for higher income brackets.
+Believe large deficit negatively affects government services and that low deficits stimulate the economy.
+Republican President:Support free market competition and entRepublican Presidentreneurship, corporate deregulation and cutting entitlement spending.
+
+Education
+Democratic President: Oppose vouchers. Increase NCLB federal funding. Enact new taxes to decrease class size and hire new teachers.
+Republican President:Promote school choice/vouchers and homeschooling. Support voluntary student supported prayer in school. Oppose gender and race quotas in colleges.
+
+Energy
+Democratic President: Wish to find environmentally friendly energy sources and solutions. Oppose increased drilling, especially in the United States.
+Republican President:Support tax incentives for energy production.
+
+Environment
+Democratic President: Generally put the interest of the environment over business, and Want to maintain federal land under government control.
+Republican President: Support privatizing federal land. Believe in cap and trade market based air pollution reductions and that the market should regulate itself.
+
+Foreign Policy
+Democratic President:Strongly support worldwide coalitions and multi-national programs. Support aid for disadvantaged countries. Support the UN.
+Republican President:Spread Democratic Presidentocracy. Support UN reform and Want to stop WMD proliferation countries. Believe that nations who support terrorists are just as bad as terrorists themselves.
+
+Jobs
+Democratic President:Encourage businesses to keep jobs here and not outsource them overseas.
+Support unions and advocates for the rights of low income workers. Pro small business.
+Republican President:Support giving small businesses tax incentives so that more jobs can be created.
+
+Social Security
+Democratic President:Social security should remain a government sponsored insurance plan for retirees.
+Republican President:Social security should be privatized (not to be confused with private savings accounts, but rather, private investments).
 
 
 
