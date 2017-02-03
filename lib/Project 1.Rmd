@@ -1,5 +1,5 @@
 ---
-title: "Project 1"
+title: "Project 1 Analysis of Policy Difference between Democratic President and Republican President--Based on Inauguration Speech"
 output: html_document
 runtime: shiny
 ---
@@ -24,8 +24,10 @@ library(topicmodels)
 
 
 # Part 0 Preface
-The purpose of this project aims to analyze the difference of Republic President and Democratic President focused Policy from their inauguration speeches.
-Note!!!: Before run the document, please change the "folder.path" according to your computer document path. There are 6 places need to change.(line28, 62, 124, 159, 216, 235)
+#The purpose of this project aims to analyze the difference of Republic President and Democratic President focused Policy from their inauguration speeches with key word's comparison, frequency and data visualization.
+
+
+Note!!!: Before run the document, please change the "folder.path" code according to your computer document path. There are 6 places need to change which are line 35, 69, 140, 175, 246 and 265 Sorry about the inconvenience.
 
 
 # Part 1 Analysis of Republican President Inauguartion
@@ -82,30 +84,44 @@ for(i in 1:length(speeches)){
 }
 ```
 
-# Most Frequent Words List in Inauguration
-We choose "america, business, federal, freedom, union, constitution", we find republican president more focus on 
+# 1.1 Most Frequent Words List in Inauguration Speech
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
+library(twitteR)
 freq <- colSums(as.matrix(dtm))
 ord <- order(freq)
 dtms <- removeSparseTerms(dtm, 0.1) # This makes a matrix that is 10% empty space, maximum.   
 freq <- sort(colSums(as.matrix(dtm)), decreasing=TRUE)   
-head(freq, 14)  
+head(freq, 14) 
 ```
 
-# Histogram of Most Frequent Words in Inauguration
+# 1.2 Histogram of Most Frequent Words in Inauguration Speech
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 library(ggplot2)   
 wf <- data.frame(word=names(freq), freq=freq)
 p <- ggplot(subset(wf, freq>50), aes(word, freq))    
 p <- p + geom_bar(stat="identity")   
-p <- p + theme(axis.text.x=element_text(angle=45, hjust=1))   
+p <- p + theme(axis.text.x=element_text(angle=45, hjust=1)) 
 p  
 dtmss <- removeSparseTerms(dtm, 0.15) # This makes a matrix that is only 15% empty space, maximum. 
 ```
 
-# Cluster Dendrogram Analysis in Most Frequent Words
-We find some interesting thing, "government" always associate with "people", and "free" always associate with "people". "Will" have some high level cluster with other word.
+# 1.3 Specific Analysis with Word Association
+# In the following analysis, we will find president personal view on several topics with what kind of words associated with key words.
+# Key Words: Education, Foreign, Economy, Job, Constitution, Revenue, Tariff and Policy.
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+library(bnlearn)
+findAssocs(dtm, 'education', 0.8)
+findAssocs(dtm, 'foreign', 0.7)
+findAssocs(dtm, 'economy', 0.8)
+findAssocs(dtm, 'job', 0.75)
+findAssocs(dtm, 'constitution', 0.8)
+findAssocs(dtm, 'revenue', 0.92)
+findAssocs(dtm, 'tariff', 0.95)
+findAssocs(dtm, 'policy', 0.8)
+```
 
+# 1.4 Cluster Dendrogram Analysis in Most Frequent Words
+# We find some interesting thing, "government" always associate with "people", and "free" always associate with "people". "Will" have highest level cluster with other word.
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 library(cluster)   
 d <- dist(t(dtmss), method="euclidian")   
@@ -119,13 +135,8 @@ rect.hclust(fit, k=5, border="red")
 ```
 
 
+# Part 2 Analysis of Democratic President's Inauguartion Speech
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
-```
-
-
-# Part 2 Analysis of Democratic President's Inauguartion
-```{r,echo=FALSE, warning=FALSE,message=FALSE}
-
 folder.path="D:/Spr2017-Proj1-SiyuanYao/data/Dem"
 speeches=list.files(path = folder.path, pattern = "*.txt")
 prez.out=substr(speeches, 6, nchar(speeches)-4)
@@ -179,9 +190,8 @@ for(i in 1:length(speeches)){
 }
 ```
 
-# Most Frequent Words List in Inaug
-The most frequent words "union, government, america, public, democracy, constitution", which have a little bit difference with democratic president inauguration speech. We can find republican presidents more focus on businese and economy compared with democartic presidents.
-
+# 2.1 Most Frequent Words List in Inauguration Speech
+# The most frequent words "union, government, america, public, democracy, constitution", which have a little bit difference with democratic president inauguration speech. We can find republican presidents more focus on businese and economy compared with democartic presidents.
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 freq <- colSums(as.matrix(dtm))
 ord <- order(freq)
@@ -190,7 +200,21 @@ freq <- sort(colSums(as.matrix(dtm)), decreasing=TRUE)
 head(freq, 14)  
 ```
 
-# Histogram of Most Frequent Words in Inaug
+# 2.2 Specific Analysis with Word Association
+# In the following analysis, we will find president personal view on several topics with what kind of words associated with key words.
+# Key Words: Education, Foreign, Economy, Job, Constitution, Revenue, Tariff and Policy.
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+findAssocs(dtm, 'education', 0.75)
+findAssocs(dtm, 'foreign', 0.89)
+findAssocs(dtm, 'economy', 0.65)
+findAssocs(dtm, 'job', 0.75)
+findAssocs(dtm, 'constitution', 0.90)
+findAssocs(dtm, 'revenue', 0.97)
+findAssocs(dtm, 'tariff', 0.86)
+findAssocs(dtm, 'policy', 0.8)
+```
+
+# 2.3 Histogram of Most Frequent Words in Inauguration Speech
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 library(ggplot2)
 wf <- data.frame(word=names(freq), freq=freq) 
@@ -201,7 +225,8 @@ p
 dtmss <- removeSparseTerms(dtm, 0.15) # This makes a matrix that is only 15% empty space, maximum. 
 ```
 
-# Cluster Analysis in Most Frequent Words
+# 2.4 Cluster Analysis in Most Frequent Words
+# We can find "shall" have the highest level than other words, compared to Republican Presidents' result, "shall" is weak than "will" that indicates Democratic Presidents incline to persuaded policy not forced policy.
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 library(cluster)   
 d <- dist(t(dtmss), method="euclidian")   
@@ -215,8 +240,8 @@ rect.hclust(fit, k=5, border="red") # draw dendogram with red borders around the
 ```
 
 
-# Part 3 Compare Parties' Comparison
-In the part, we can focus on individual difference on two sides.
+# Part 3 Parties' Comparison
+# In the part, we can focus on individual difference view on two sides.
 ```{r,echo=FALSE, warning=FALSE,message=FALSE}
 folder.path="D:/Spr2017-Proj1-SiyuanYao/data/Rep"
 speeches1=list.files(path = folder.path, pattern = "*.txt")
@@ -317,54 +342,33 @@ shinyApp(
 ```
 
 
-# Part 4 Conclusion
+# Part 4 Project Conclusion: The Main Difference in Republican President and Democratic President's Policy View
 
-Economy
-Democratic President:Favor minimum wages and progressive taxation i.e. higher tax rates for higher income brackets.
-Believe large deficit negatively affects government services and that low deficits stimulate the economy.
-Republican President:Support free market competition and entRepublican Presidentreneurship, corporate deregulation and cutting entitlement spending.
+# 4.1 Economy
+# Democratic President:Favor minimum wages and progressive taxation i.e. higher tax rates for higher income brackets.
+#Believe large deficit negatively affects government services and that low deficits stimulate the economy.
+# Republican President:Support free market competition and entRepublican Presidentreneurship, corporate deregulation and cutting entitlement spending.
 
-Education
-Democratic President: Oppose vouchers. Increase NCLB federal funding. Enact new taxes to decrease class size and hire new teachers.
-Republican President:Promote school choice/vouchers and homeschooling. Support voluntary student supported prayer in school. Oppose gender and race quotas in colleges.
+# 4.2 Education
+# Democratic President: Oppose vouchers. Increase NCLB federal funding. Enact new taxes to decrease class size and hire new teachers.
+# Republican President:Promote school choice/vouchers and homeschooling. Support voluntary student supported prayer in school. Oppose gender and race quotas in colleges.
 
-Energy
-Democratic President: Wish to find environmentally friendly energy sources and solutions. Oppose increased drilling, especially in the United States.
-Republican President:Support tax incentives for energy production.
+# 4.3 Energy
+# Democratic President: Wish to find environmentally friendly energy sources and solutions. Oppose increased drilling, especially in the United States.
+# Republican President:Support tax incentives for energy production.
 
-Environment
-Democratic President: Generally put the interest of the environment over business, and Want to maintain federal land under government control.
-Republican President: Support privatizing federal land. Believe in cap and trade market based air pollution reductions and that the market should regulate itself.
+# 4.4 Environment
+# Democratic President: Generally put the interest of the environment over business, and Want to maintain federal land under government control.
+# Republican President: Support privatizing federal land. Believe in cap and trade market based air pollution reductions and that the market should regulate itself.
 
-Foreign Policy
-Democratic President:Strongly support worldwide coalitions and multi-national programs. Support aid for disadvantaged countries. Support the UN.
-Republican President:Spread Democratic Presidentocracy. Support UN reform and Want to stop WMD proliferation countries. Believe that nations who support terrorists are just as bad as terrorists themselves.
+# 4.5 Foreign Policy
+# Democratic President:Strongly support worldwide coalitions and multi-national programs. Support aid for disadvantaged countries. Support the UN.
+# Republican President:Spread Democratic Presidentocracy. Support UN reform and Want to stop WMD proliferation countries. Believe that nations who support terrorists are just as bad as terrorists themselves.
 
-Jobs
-Democratic President:Encourage businesses to keep jobs here and not outsource them overseas.
-Support unions and advocates for the rights of low income workers. Pro small business.
-Republican President:Support giving small businesses tax incentives so that more jobs can be created.
+# 4.6 Jobs
+# Democratic President:Encourage businesses to keep jobs here and not outsource them overseas. Support unions and advocates for the rights of low income workers. Pro small business.
+# Republican President:Support giving small businesses tax incentives so that more jobs can be created.
 
-Social Security
-Democratic President:Social security should remain a government sponsored insurance plan for retirees.
-Republican President:Social security should be privatized (not to be confused with private savings accounts, but rather, private investments).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 4.7 Social Security Issue
+# Democratic President:Social security should remain a government sponsored insurance plan for retirees.
+# Republican President:Social security should be privatized (not to be confused with private savings accounts, but rather, private investments).
